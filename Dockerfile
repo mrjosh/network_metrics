@@ -8,6 +8,8 @@ WORKDIR /build
 # Adding project to work directory
 ADD . /build
 
+RUN apk add git
+
 ENV PUID 1000
 ENV PGID 1000
 

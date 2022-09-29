@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	ping "github.com/digineo/go-ping"
@@ -70,8 +71,10 @@ func configureNetworkIPAddress(ifaceName, ifaceIP string) (string, error) {
 		return "", err
 	}
 
-	networkIPAddress.WithLabelValues(ifaceName, string(data))
-	return string(data), nil
+	dataStr := strings.TrimRight(string(data), "\r\n")
+
+	networkIPAddress.WithLabelValues(ifaceName, dataStr)
+	return dataStr, nil
 }
 
 func main() {
@@ -114,6 +117,8 @@ func main() {
 
 		for {
 			<-ticker.C
+
+			logWithZap(fmt.Sprintf("Pinging: %s", currentNetworkIP))
 
 			pingIPAddr, err := net.ResolveIPAddr("ip4", currentNetworkIP)
 			if err != nil {
