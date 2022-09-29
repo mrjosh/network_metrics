@@ -138,7 +138,7 @@ func main() {
 				os.Exit(1)
 			}
 
-			pingGuage.WithLabelValues(*ifaceName, currentNetworkIP).Add(float64(rtt))
+			pingGuage.WithLabelValues(*ifaceName, currentNetworkIP).Set(float64(rtt))
 			logWithZap("Configured Network IPAddress Ping")
 
 		}
